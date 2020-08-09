@@ -2,6 +2,7 @@ const db = require('./index.js');
 const Images = require('./Images.js');
 
 //how many hosts will we have?
+//data coming from S3 //update once data is in bucket
 const seedData = [
   {
     room_id: 10006546,
