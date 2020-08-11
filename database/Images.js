@@ -20,7 +20,9 @@ const imagesSchema = new mongoose.Schema({
   icons: {
     star_url: String,
     heart_url: String,
-    share_url: String
+    share_url: String,
+    superhost_url: String,
+    verified_url: String
   }
 });
 

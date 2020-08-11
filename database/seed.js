@@ -1,7 +1,7 @@
 const db = require('./index.js');
 const Images = require('./Images.js');
 
-//how many hosts will we have?
+//100 hosts/rooms worth of data to be provided
 const seedData = [
   {
     room_id: 10006546,
