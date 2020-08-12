@@ -1,21 +1,23 @@
 const path = require('path');
-const components_dir = path.join(__dirname, '/react/components');
-const dist_dir = path.join(__dirname, '/react/dist');
+const fs = require('fs');
 
 module.exports = {
-  entry: `${components_dir}/App.jsx`,
+  entry: path.join(__dirname, './client/src/index.js'),
   output: {
     filename: 'bundle.js',
-    path: dist_dir
+    path: path.resolve(__dirname, './client/dist')
   },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.jsx?/,
-        include: components_dir,
+        test: [/\.js$/, /\.jsx?$/],
+        exclude: /node_modules/,
         loader: 'babel-loader',
-        query: {
-          presets: ['react', 'es2015']
+        options: {
+          presets: [
+            '@babel/preset-env',
+            '@babel/preset-react'
+          ]
         }
       }
     ]
