@@ -127,7 +127,12 @@ const seedData = [
 
 const insertSeedData = function() {
   Images.create(seedData)
-    .then(() => db.disconnect());
+    .then(() => {
+      console.log('successfully seeded db!');
+    })
+    .catch((err) => {
+      console.log('error seeding db: ', err);
+    });
 };
 
 insertSeedData();
