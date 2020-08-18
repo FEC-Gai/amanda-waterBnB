@@ -11,19 +11,12 @@ const imagesSchema = new mongoose.Schema({
   host_id: Number,
   host_image_url: String,
   reviewers:
-  {
+  [{
     reviewer_id: Number,
     reviewer_image_url: String
-  },
+  }],
   rating: Number,
-  review_count: Number,
-  icons: {
-    star_url: String,
-    heart_url: String,
-    share_url: String,
-    superhost_url: String,
-    verified_url: String
-  }
+  review_count: Number
 });
 
 const Images = mongoose.model('Images', imagesSchema);

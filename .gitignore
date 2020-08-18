@@ -1,3 +1,7 @@
 node_modules
 
 config/cloudinary.js
+
+config/unsplash.js
+
+.env
