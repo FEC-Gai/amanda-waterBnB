@@ -4,9 +4,10 @@ const cors = require('cors');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
+const fs = require('fs');
 const db = require('../database/index.js');
 const Images = require('../database/Images.js');
-const { getUnsplashRooms } = require('../database/helpers/unsplashImages.js');
+const { getUnsplashRooms } = require('../database/helpers/getUnsplash.js');
 
 const port = 8080;
 const app = express();
@@ -20,26 +21,30 @@ app.use(cors());
 
 //post images to cloudinary
 //fileUpload.array(file, options, cb)
-//{ getUnsplashRooms }
-app.post('/upload', fileUpload.array('image'), (req, res, next) => {
-  let streamUpload = (req) => {
-    return new Promise((resolve, reject) => {
-      let stream = cloudinary.uploader.upload_stream((err, result) => {
-        if (result) {
-          resolve(result);
-        } else {
-          reject(err);
-        }
-      });
-      streamifier.createReadStream(req.file.buffer).pipe(stream);
-    });
-  }
-  async function upload(req) {
-    let result = await streamUpload(req);
-    console.log('stream upload to cloudinary: ', result);
-  }
-  upload(req);
-});
+//once I get images, upload sized images as: photo.urls.raw + "&w=1057"
+// app.post('/upload', fileUpload.array(getUnsplashRooms), (req, res, next) => {
+//   let streamUpload = (req) => {
+//     return new Promise((resolve, reject) => {
+//       let stream = cloudinary.uploader.upload_stream((err, result) => {
+//         if (result) {
+//           resolve(result);
+//         } else {
+//           reject(err);
+//         }
+//       });
+//       streamifier.createReadStream(req.file.buffer).pipe(stream);
+//     });
+//   }
+//   async function upload(req) {
+//     let result = await streamUpload(req);
+//     console.log('stream upload to cloudinary: ', result);
+//   }
+//   upload(req);
+// });
+
+//post unsplash images to upload folder
+//app.post()
+
 
 app.get('/room_photos', (req, res) => {
   Images.find({})
@@ -62,3 +67,8 @@ app.listen(port, () => {
 
 //for testing instead of listen above:
 //module.exports = app;
+
+
+
+
+// app.post('/upload', fileUpload.array('image'), (req, res, next) => {
