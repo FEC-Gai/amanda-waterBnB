@@ -1,24 +1,22 @@
 const axios = require('axios');
 const Unsplash = require('unsplash-js').default;
-const { toJson } = require('unsplash-js');
-const dotenv = require('dotenv'); //problem with this variable- undefined the way it's getting passed //.config({ path: '.../.env' })
+//const { toJson } = require('unsplash-js');
+const dotenv = require('dotenv');
 dotenv.config();
-
-//process.env.UNSPLASH_API_KEY
+//.config({ path: '.../.env' })
 
 
 let getUnsplashRooms = (query = 'living,indoors,room') => {
   let options = {
     method: 'GET',
-    url: `https://api.unsplash.com/search/photos/?query=${query}&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
+    url: `https://api.unsplash.com/search/photos/?query=${query}&page=1&per_page=10&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
   };
 
   return axios(options)
-    //.then(toJson)
     .then((response) => {
       //response.data shows total # of results & total pages
       //response.data.results is an array of image objects
-      console.log('🔶response.data', response.data.results);
+      //console.log('🔶response.data.results', response.data.results);
       return response.data.results;
     })
     .catch((err) => {
@@ -27,5 +25,3 @@ let getUnsplashRooms = (query = 'living,indoors,room') => {
 };
 
 module.exports.getUnsplashRooms = getUnsplashRooms;
-
-//or response.results?

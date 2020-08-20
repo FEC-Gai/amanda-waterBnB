@@ -6,48 +6,61 @@ const axios = require('axios');
 const { getUnsplashRooms } = require('./getUnsplash.js');
 
 async function download() {
-  let imageArr = getUnsplashRooms('living,indoors,room');
-  const eachPhoto = (imageArr) => {
-    console.log('🇳🇬imageArr: ', imageArr);
-    let photoUrl;
-    for (let i = 0; i < imageArr.length; i++) {
-      let photoObj = imageArr[i];
-      console.log('🇲🇰photoObj: ', photoObj);
-      photoUrl = photoObj.urls.raw;
-    }
-    console.log('🏳️‍🌈photoUrl: ', photoUrl);
-    return photoUrl;
-  };
-  const photoUrl = eachPhoto(getUnsplashRooms);
-  const filePath = path.resolve(__dirname, './upload', 'photo.jpg');
-  const getStream = await axios({
-    method: 'GET',
-    url: photoUrl,
-    responseType: 'stream'
-  })
-
-  getStream.data.pipe(fs.createWriteStream(filePath));
-
-  return new Promise((resolve, reject) => {
-    response.data.on('end', () => {
-      resolve();
-    });
-    response.data.on('error', (err) => {
-      reject(err);
+  return getUnsplashRooms('living,indoors,room')
+    .then((response) => {
+          let photoUrl;
+          for (let i = 0; i < response.length; i++) {
+            let photoObj = response[i];
+            //console.log('🇲🇰photoObj: ', photoObj);
+            photoUrl = photoObj.urls.raw + "&w=1057";
+          }
+          //console.log('🏳️‍🌈photoUrl: ', photoUrl);
+          return photoUrl;
     })
-  })
+    .then((photoUrl) => {
+      //console.log('🏺photoUrl 2: ', photoUrl);
+      const filePath = path.resolve(__dirname, './upload', 'photo.jpg');
+      const getStream = {
+        method: 'GET',
+        url: photoUrl,
+        responseType: 'stream'
+      };
+      return axios(getStream)
+        .then((response) => {
+          console.log('🔮response: ', response);
+          response.data.pipe(fs.createWriteStream(filePath));
+          return new Promise((resolve, reject) => {
+            response.data.on('end', () => {
+              resolve();
+            });
+            response.data.on('error', (err) => {
+              reject(err);
+            });
+          })
+        })
+    })
+    .catch((err) => {
+      console.log('error downloading photo: ', err);
+    })
+  };
 
-};
-
-download()
+  download()
   .then(() => {
     console.log('download complete');
   })
 
-module.exports.download = download;
+  module.exports.download = download;
 
 
+//const photoUrl = eachPhoto(getUnsplashRooms);
 //photo.urls.raw + "&w=1057"
+
+// response.data.on('end', () => {
+//   resolve();
+// });
+// response.data.on('error', (err) => {
+//   reject(err);
+// });
 
 
 
