@@ -8,18 +8,23 @@ const { getUnsplashRooms } = require('./getUnsplash.js');
 async function download() {
   return getUnsplashRooms('living,indoors,room')
     .then((response) => {
-          let photoUrl;
+          let photoUrls = [];
           for (let i = 0; i < response.length; i++) {
             let photoObj = response[i];
             //console.log('🇲🇰photoObj: ', photoObj);
-            photoUrl = photoObj.urls.raw + "&w=1057";
+            let photoUrl = photoObj.urls.raw + "&w=1057";
+            photoUrls.push(photoUrl);
           }
-          //console.log('🏳️‍🌈photoUrl: ', photoUrl);
-          return photoUrl;
+          console.log('🏳️‍🌈photoUrls: ', photoUrls);
+          //grab photoUrl for each photoObj
+          return photoUrls;
     })
-    .then((photoUrl) => {
+    .then((photoUrls) => {
       //console.log('🏺photoUrl 2: ', photoUrl);
+      //`photo${num}.jpg`
       const filePath = path.resolve(__dirname, './upload', 'photo.jpg');
+      //return axios req for each photoUrl in array
+      //download each
       const getStream = {
         method: 'GET',
         url: photoUrl,
@@ -27,7 +32,7 @@ async function download() {
       };
       return axios(getStream)
         .then((response) => {
-          console.log('🔮response: ', response);
+          //console.log('🔮response: ', response);
           response.data.pipe(fs.createWriteStream(filePath));
           return new Promise((resolve, reject) => {
             response.data.on('end', () => {
@@ -50,37 +55,3 @@ async function download() {
   })
 
   module.exports.download = download;
-
-
-//const photoUrl = eachPhoto(getUnsplashRooms);
-//photo.urls.raw + "&w=1057"
-
-// response.data.on('end', () => {
-//   resolve();
-// });
-// response.data.on('error', (err) => {
-//   reject(err);
-// });
-
-
-
-// let download = (photo, path, cb) => {
-//   rquest.head(photo, (err, res, body) => {
-//     request(photo)
-//       .pipe(fs.createWriteStream(path))
-//       .on('close', cb)
-//   })
-// };
-
-// const path = '../upload/image.jpg';
-
-// const eachPhoto = (getUnsplashRooms) => {
-//   for (let i = 0; i < getUnsplashRooms.length; i++) {
-//     let photo = getUnsplashRooms[i];
-//   }
-//   return photo;
-// };
-
-// download(eachPhoto(getUnsplashRooms), path, () => {
-//   console.log('downloaded photos to upload folder');
-// });
