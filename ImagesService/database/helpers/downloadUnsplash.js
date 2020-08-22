@@ -6,6 +6,7 @@ const path = require('path');
 const axios = require('axios');
 //const request = require('request');
 const { getUnsplashRooms } = require('./getUnsplash.js');
+const writeFilePromise = Promise.promisify(fs.writeFile);
 
 async function downloadRooms() {
   return getUnsplashRooms('living,indoors,room')
@@ -24,27 +25,21 @@ async function downloadRooms() {
     })
     .then((photoUrls) => {
       //don't need to save as photos, just save as photo urls
-      let filePath;
-      let pathArr = [];
-      for (let j = 0; j < photoUrls.length; j++) {
-        let photoUrl = photoUrls[j];
-        filePath = path.resolve(__dirname, './upload/roomPhotos', photoUrl);
-        let write = Promise.promisify(fs.writeFile(filePath, 'utf8', callback));
-        console.log('⛔️write: ', write);
-        pathArr.push(write);
-      }
-      return Promise.all(pathArr)
-      .then((response) => {
-        //console.log('🔮response: ', response);
-        return new Promise((resolve, reject) => {
-          response.data.on('end', () => {
-            resolve();
-          });
-          response.data.on('error', (err) => {
-            reject(err);
-          });
-        })
+      //let pathArr = [];
+      //do mapping func instead of for loop
+      let pathArr = photoUrls.map((photoUrl, index) => {
+        //room1.txt, etc
+        index = '' + index;
+        let filePath = path.resolve(__dirname, './upload/roomPhotos', 'room' + `${index}.txt`);
+        return writeFilePromise(filePath, photoUrl, 'utf8')
+          .catch((err) => {
+            console.log('error writing url file: ', err);
+          })
       })
+      return Promise.all(pathArr)
+    })
+    .then(() => {
+      console.log('🔮everything ran!');
     })
     .catch((err) => {
       console.log('error downloading room photos: ', err);
@@ -57,47 +52,3 @@ async function downloadRooms() {
   })
 
   module.exports.downloadRooms = downloadRooms;
-
-
-  /*
- (err, data) => {
-          if (err) {
-            throw err;
-          } else {
-            console.log('data', data);
-          }
-        }
-
-filePath = path.resolve(__dirname, './upload/roomPhotos', photoUrl);
-response.data.pipe(fs.write(filePath, 'utf-8'));
-let nums = [];
-      for (let i = 1; i <= 500; i++) {
-        nums.push(i);
-      }
-      //console.log('nums: ', nums);
-
-      let arrOfGetReqs = [];
-      //return axios req for each photoUrl in array
-      //download each
-
-      const options = {
-        //method: 'GET',
-        //url: photoUrl,
-        responseType: 'stream'
-      };
-
-      return axios.all(arrOfGetReqs, options)
-      .then((response) => {
-        //console.log('🔮Object.keys of response: ', Object.keys(response));
-        response.data.pipe(fs.write(filePath));
-        return new Promise((resolve, reject) => {
-          response.data.on('end', () => {
-            resolve();
-          });
-          response.data.on('error', (err) => {
-            reject(err);
-          });
-        })
-      })
-    })
-  */
