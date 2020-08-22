@@ -1,5 +1,7 @@
 //const fetch = require('node-fetch');
 const fs = require('fs');
+let Promise = require('bluebird');
+//const util = require('util');
 const path = require('path');
 const axios = require('axios');
 //const request = require('request');
@@ -21,44 +23,28 @@ async function downloadRooms() {
       return photoUrls;
     })
     .then((photoUrls) => {
-      //console.log('〽️photoUrls 2: ', photoUrls);
+      //don't need to save as photos, just save as photo urls
       let filePath;
-      let arrOfGetReqs = [];
-      //grab photoUrl for each photoObj
-      let nums = [];
-      for (let i = 1; i <= 500; i++) {
-        nums.push(i);
+      let pathArr = [];
+      for (let j = 0; j < photoUrls.length; j++) {
+        let photoUrl = photoUrls[j];
+        filePath = path.resolve(__dirname, './upload/roomPhotos', photoUrl);
+        let write = Promise.promisify(fs.writeFile(filePath, 'utf8', callback));
+        console.log('⛔️write: ', write);
+        pathArr.push(write);
       }
-      //console.log('nums: ', nums);
-      for (let i = 0; i <= nums.length; i++) {
-        let num = nums[i];
-        filePath = path.resolve(__dirname, './upload/roomPhotos', `roomPhoto${num}.jpg`);
-        //return axios req for each photoUrl in array
-        //download each
-        for (let j = 0; j < photoUrls.length; j++) {
-          let photoUrl = axios.get(photoUrls[j]);
-          arrOfGetReqs.push(photoUrl);
-        }
-        const options = {
-          //method: 'GET',
-          //url: photoUrl,
-          responseType: 'stream'
-        };
-        //don't need to save as photos, just save as photo urls
-        return axios.all(arrOfGetReqs, options)
-        .then((response) => {
-          console.log('🔮Object.values of response: ', Object.values(response));
-          response.data.pipe(fs.createWriteStream(filePath));
-          return new Promise((resolve, reject) => {
-            response.data.on('end', () => {
-              resolve();
-            });
-            response.data.on('error', (err) => {
-              reject(err);
-            });
-          })
+      return Promise.all(pathArr)
+      .then((response) => {
+        //console.log('🔮response: ', response);
+        return new Promise((resolve, reject) => {
+          response.data.on('end', () => {
+            resolve();
+          });
+          response.data.on('error', (err) => {
+            reject(err);
+          });
         })
-      }
+      })
     })
     .catch((err) => {
       console.log('error downloading room photos: ', err);
@@ -71,3 +57,47 @@ async function downloadRooms() {
   })
 
   module.exports.downloadRooms = downloadRooms;
+
+
+  /*
+ (err, data) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log('data', data);
+          }
+        }
+
+filePath = path.resolve(__dirname, './upload/roomPhotos', photoUrl);
+response.data.pipe(fs.write(filePath, 'utf-8'));
+let nums = [];
+      for (let i = 1; i <= 500; i++) {
+        nums.push(i);
+      }
+      //console.log('nums: ', nums);
+
+      let arrOfGetReqs = [];
+      //return axios req for each photoUrl in array
+      //download each
+
+      const options = {
+        //method: 'GET',
+        //url: photoUrl,
+        responseType: 'stream'
+      };
+
+      return axios.all(arrOfGetReqs, options)
+      .then((response) => {
+        //console.log('🔮Object.keys of response: ', Object.keys(response));
+        response.data.pipe(fs.write(filePath));
+        return new Promise((resolve, reject) => {
+          response.data.on('end', () => {
+            resolve();
+          });
+          response.data.on('error', (err) => {
+            reject(err);
+          });
+        })
+      })
+    })
+  */
