@@ -7,7 +7,7 @@ dotenv.config();
 let getUnsplashRooms = (query = 'living,indoors,room') => {
   let options = {
     method: 'GET',
-    url: `https://api.unsplash.com/search/photos/?query=${query}&page=1&per_page=3&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
+    url: `https://api.unsplash.com/search/photos/?query=${query}&page=5&per_page=30&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
   };
 
   return axios(options)
