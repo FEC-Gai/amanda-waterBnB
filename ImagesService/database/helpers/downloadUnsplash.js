@@ -1,7 +1,6 @@
 const fs = require('fs');
 let Promise = require('bluebird');
 const path = require('path');
-const axios = require('axios');
 const { getUnsplashRooms } = require('./getUnsplash.js');
 const writeFilePromise = Promise.promisify(fs.writeFile);
 
