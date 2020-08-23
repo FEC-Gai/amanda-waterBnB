@@ -22,4 +22,26 @@ let getUnsplashRooms = (query = 'living,indoors,room') => {
     });
 };
 
-module.exports.getUnsplashRooms = getUnsplashRooms;
+let getUnsplashHosts = (query = 'portrait,person') => {
+  let options = {
+    method: 'GET',
+    url: `https://api.unsplash.com/search/photos/?query=${query}&page=5&per_page=30&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
+  };
+
+  return axios(options)
+    .then((response) => {
+      //response.data shows total # of results & total pages
+      //response.data.results is an array of image objects
+      console.log('🔶response.data.results length', response.data.results.length);
+      return response.data.results;
+    })
+    .catch((err) => {
+      console.log('error getting room images from Unsplash: ', err);
+    });
+};
+
+exports.getUnsplashRooms = getUnsplashRooms;
+exports.getUnsplashHosts = getUnsplashHosts;
+
+
+//module.exports.getUnsplashRooms = getUnsplashRooms;
