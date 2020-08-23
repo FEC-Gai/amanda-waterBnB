@@ -22,7 +22,7 @@ let getUnsplashRooms = (query = 'living,indoors,room') => {
     });
 };
 
-let getUnsplashHosts = (query = 'portrait,person') => {
+let getUnsplashHosts = (query = 'person,happy') => {
   let options = {
     method: 'GET',
     url: `https://api.unsplash.com/search/photos/?query=${query}&page=5&per_page=30&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
@@ -61,3 +61,6 @@ let getUnsplashReviewers = (query = 'person,cheerful') => {
 exports.getUnsplashRooms = getUnsplashRooms;
 exports.getUnsplashHosts = getUnsplashHosts;
 exports.getUnsplashReviewers = getUnsplashReviewers;
+
+
+//portrait,person

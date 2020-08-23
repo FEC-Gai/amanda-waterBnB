@@ -42,14 +42,14 @@ async function downloadRooms() {
   })
 
   async function downloadHosts() {
-    return getUnsplashHosts('portrait,person')
+    return getUnsplashHosts('person,happy')
       .then((response) => {
         //only getting 30 max //getting 3 as test
         //console.log('🇲🇰response length: ', response.length);
         let photoUrls = [];
         for (let i = 0; i < response.length; i++) {
           let photoObj = response[i];
-          let photoUrl = photoObj.urls.raw + "&w=1057";
+          let photoUrl = photoObj.urls.raw + "&w=204";
           photoUrls.push(photoUrl);
         }
         return photoUrls;
@@ -79,14 +79,14 @@ async function downloadRooms() {
     })
 
     async function downloadReviewers() {
-      return getUnsplashReviewers('portrait,person')
+      return getUnsplashReviewers('person,cheerful')
         .then((response) => {
           //only getting 30 max //getting 3 as test
           //console.log('🇲🇰response length: ', response.length);
           let photoUrls = [];
           for (let i = 0; i < response.length; i++) {
             let photoObj = response[i];
-            let photoUrl = photoObj.urls.raw + "&w=1057";
+            let photoUrl = photoObj.urls.raw + "&w=204";
             photoUrls.push(photoUrl);
           }
           return photoUrls;
