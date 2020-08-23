@@ -21,7 +21,7 @@ async function downloadRooms() {
     .then((photoUrls) => {
       let pathArr = photoUrls.map((photoUrl, index) => {
         index = '' + index;
-        let filePath = path.resolve(__dirname, './upload/roomPhotos', 'room' + `${index}.txt`);
+        let filePath = path.resolve(__dirname, './upload/roomPhotos', `room${index}.txt`);
         return writeFilePromise(filePath, photoUrl, 'utf8')
           .catch((err) => {
             console.log('error writing url file: ', err);
