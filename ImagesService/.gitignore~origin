@@ -1,0 +1,8 @@
+node_modules
+
+upload
+
+config/cloudinary.js
+
+.env
+
