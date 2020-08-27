@@ -27,9 +27,9 @@ class Images extends React.Component {
   }
 
   render() {
-    // return (
-
-    // );
+    return (
+      <h1>Unique Glamping Experience</h1>
+    );
   }
 }
 
