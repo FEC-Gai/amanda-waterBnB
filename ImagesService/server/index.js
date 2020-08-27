@@ -9,7 +9,7 @@ const db = require('../database/index.js');
 const Images = require('../database/Images.js');
 const { getRoomUrls, getHostUrls, getReviewerUrls } = require('../database/helpers/urlsArray.js');
 
-const port = 8080;
+const port = 3001;
 const app = express();
 const fileUpload = multer();
 
