@@ -1,4 +1,0 @@
-const CLOUDINARY_API_KEY = 'YOUR_API_KEY_HERE';
-
-
-export default CLOUDINARY_API_KEY;
