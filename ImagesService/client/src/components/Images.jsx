@@ -5,24 +5,32 @@ class Images extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleAndPhotos: {}
+      title: '',
+      photos: [],
+      hasLoaded: false
     }
+    this.getPhotosByRoomId = this.getPhotosByRoomId.bind(this);
   }
 
   componentDidMount() {
-  this.getTitleAndPhotosByRoomId(1);
+  //this.getTitleByRoomId(1);
+  this.getPhotosByRoomId(1);
   }
 
-  getTitleAndPhotosByRoomId(roomId) {
-  axios.get(`http://localhost:8080/${roomId}/room_photos`)
+  getPhotosByRoomId(roomId) {
+    //will pass in folder on cloudinary api endpoint
+  axios.get(`http://localhost:3001/${roomId}/room_photos`)
     .then((response) => {
+      console.log('photos: ', response.data);
+      let allPhotos = [];
+      allPhotos.push(response.data[0]);
       this.setState({
-        titleAndPhotos: response.data
+        photos: allPhotos,
+        hasLoaded: true
       });
-      console.log('titleAndPhotos: ', response.data);
     })
     .catch((err) => {
-      console.log('error getting title and photos: ', err);
+      console.log('error getting photos: ', err);
     })
   }
 
