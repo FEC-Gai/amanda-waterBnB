@@ -17,10 +17,10 @@ app.use('/proxy', proxy('www.google.com', {
 
 app.use('/photos', proxy('http://localhost:3001', {
   proxyReqPathResolver: function (req) {
-    //localhost:3000?id=10
-    let piecesArr = req.url.split('?');
-    console.log('💢', piecesArr);
-    let query = piecesArr[1];
+    //localhost:3000/?10
+    let firstPiece = req.url.split('?');
+    console.log('💢', firstPiece);
+    let query = firstPiece[1];
     if (!query) {
       return '/';
     } else {
