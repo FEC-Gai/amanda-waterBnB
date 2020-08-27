@@ -21,7 +21,11 @@ app.use('/photos', proxy('http://localhost:3001', {
     let piecesArr = req.url.split('?');
     console.log('💢', piecesArr);
     let query = piecesArr[1];
-    return !query ? '/' : `/room_photos/${query}`;
+    if (!query) {
+      return '/';
+    } else {
+      return `/photos/${query}`;
+    }
   }
 }));
 
