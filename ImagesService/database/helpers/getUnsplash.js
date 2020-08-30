@@ -7,14 +7,14 @@ dotenv.config();
 let getUnsplashRooms = (query = 'living,indoors,room') => {
   let options = {
     method: 'GET',
-    url: `https://api.unsplash.com/search/photos/?query=${query}&page=5&per_page=30&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
+    url: `https://api.unsplash.com/search/photos/?query=${query}&page=1&per_page=10&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
   };
 
   return axios(options)
     .then((response) => {
       //response.data shows total # of results & total pages
       //response.data.results is an array of image objects
-      console.log('🔶response.data.results length', response.data.results.length);
+      //console.log('🔶response.data.results length', response.data.results.length);
       return response.data.results;
     })
     .catch((err) => {
@@ -25,14 +25,14 @@ let getUnsplashRooms = (query = 'living,indoors,room') => {
 let getUnsplashHosts = (query = 'person,happy') => {
   let options = {
     method: 'GET',
-    url: `https://api.unsplash.com/search/photos/?query=${query}&page=5&per_page=30&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
+    url: `https://api.unsplash.com/search/photos/?query=${query}&page=1&per_page=1&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
   };
 
   return axios(options)
     .then((response) => {
       //response.data shows total # of results & total pages
       //response.data.results is an array of image objects
-      console.log('🔶response.data.results length', response.data.results.length);
+      //console.log('🔶response.data.results length', response.data.results.length);
       return response.data.results;
     })
     .catch((err) => {
@@ -43,14 +43,14 @@ let getUnsplashHosts = (query = 'person,happy') => {
 let getUnsplashReviewers = (query = 'person,cheerful') => {
   let options = {
     method: 'GET',
-    url: `https://api.unsplash.com/search/photos/?query=${query}&page=5&per_page=30&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
+    url: `https://api.unsplash.com/search/photos/?query=${query}&page=1&per_page=5&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
   };
 
   return axios(options)
     .then((response) => {
       //response.data shows total # of results & total pages
       //response.data.results is an array of image objects
-      console.log('🔶response.data.results length', response.data.results.length);
+      //console.log('🔶response.data.results length', response.data.results.length);
       return response.data.results;
     })
     .catch((err) => {
