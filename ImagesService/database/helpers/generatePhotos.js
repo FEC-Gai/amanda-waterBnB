@@ -3,19 +3,20 @@ const { getUnsplashRooms, getUnsplashHosts, getUnsplashReviewers } = require('./
 //const faker = require('faker');
 
 //save photo data in one obj variable - after resolving promise
-let allPhotos = {};
+const allPhotos = {};
 
 console.log("Starting up!");
 
 async function roomUrls() {
-  return getUnsplashRooms('living,indoors,room')
+  return await getUnsplashRooms('living,indoors,room')
     .then((response) => {
+      console.log('🦠response.length: ', response.length); //works here
       let urls = [];
       for (let i = 0; i < response.length; i++) { //response not coming through when run all funcs in this file
         urls.push(response[i].urls.raw + "&w=1057");
       }
       allPhotos.roomPhotos = urls;
-      //console.log('💈allPhotos.roomPhotos: ', allPhotos.roomPhotos);
+      //console.log('💈allPhotos.roomPhotos: ', allPhotos.roomPhotos); //populated here
     })
     .catch((err) => {
       console.log('error getting rooms urls array: ', err);
@@ -27,7 +28,7 @@ roomUrls()
   })
 
 async function hostUrls() {
-  return getUnsplashHosts('person,happy')
+  return await getUnsplashHosts('person,happy')
     .then((response) => {
       let urls = [];
       for (let i = 0; i < response.length; i++) {
@@ -46,7 +47,7 @@ hostUrls()
   })
 
 async function reviewerUrls() {
-  return getUnsplashReviewers('person,cheerful')
+  return await getUnsplashReviewers('person,cheerful')
     .then((response) => {
       let urls = [];
       for (let i = 0; i < response.length; i++) {
@@ -65,9 +66,9 @@ reviewerUrls()
   console.log('reviewerUrls complete');
 })
 
-console.log('allPhotos: ', allPhotos); //not populated yet here
-let photos = {};
-let results = [];
+//console.log('allPhotos: ', allPhotos); //not populated yet here
+const photos = {};
+const results = [];
 
 console.log("Starting setTimeout func!");
 //generate array of 100 objects for seedingData
@@ -112,9 +113,9 @@ async function generatePhotos() {
       }, 2000)
     })(i);
   }
-  //console.log('🎈results.length: ', results.length); //not populated until after await
-  Promise.resolve(results)
-    .then(() => {
+  //console.log('🎈results.length: ', results.length); //not populated even after await
+  return await Promise.resolve(results)
+    .then((results) => {
       console.log('🔮results.length: ', results.length); //0
     })
     .catch((err) => {
