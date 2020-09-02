@@ -16,14 +16,14 @@ class Images extends React.Component {
 
   componentDidMount() {
   //this.getTitleByRoomId(1);
-  this.getPhotosByRoomId(1);
+  this.getPhotosByRoomId();
   }
 
-  getPhotosByRoomId(roomId) {
+  getPhotosByRoomId() {
 
-  axios.get(`http://localhost:3001/${roomId}/room_photos`)
+  axios.get(`http://localhost:3001/images`)
     .then((response) => {
-      console.log('photos: ', response.data);
+      console.log('images data: ', response.data);
       let allPhotos = [];
       allPhotos.push(response.data[0]);
       this.setState({
@@ -70,3 +70,26 @@ class Images extends React.Component {
 }
 
 export default Images;
+
+
+// componentDidMount() {
+//   //this.getTitleByRoomId(1);
+//   this.getPhotosByRoomId(1);
+//   }
+
+//   getPhotosByRoomId(roomId) {
+
+//   axios.get(`http://localhost:3001/${roomId}/images`)
+//     .then((response) => {
+//       console.log('images data: ', response.data);
+//       let allPhotos = [];
+//       allPhotos.push(response.data[0]);
+//       this.setState({
+//         photos: allPhotos,
+//         hasLoaded: true
+//       });
+//     })
+//     .catch((err) => {
+//       console.log('error getting photos: ', err);
+//     })
+//   }

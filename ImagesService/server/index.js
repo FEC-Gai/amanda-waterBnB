@@ -17,82 +17,30 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(cors());
 
-//post room images to cloudinary
-//fileUpload.array(file, options, cb)
-// app.post('/upload', fileUpload.array(roomPhotos), (req, res, next) => {
-//   let streamUpload = (req) => {
-//     return new Promise((resolve, reject) => {
-//       let stream = cloudinary.uploader.upload_stream((err, result) => {
-//         if (result) {
-//           resolve(result);
-//         } else {
-//           reject(err);
-//         }
-//       });
-//       streamifier.createReadStream(req.file.buffer).pipe(stream);
-//     });
-//   }
-//   async function upload(req) {
-//     let result = await streamUpload(req);
-//     console.log('stream upload to cloudinary: ', result);
-//   }
-//   upload(req);
-// });
 
-// //post host images to cloudinary
-// app.post('/upload', fileUpload.array(hostPhotos), (req, res, next) => {
-//   let streamUpload = (req) => {
-//     return new Promise((resolve, reject) => {
-//       let stream = cloudinary.uploader.upload_stream((err, result) => {
-//         if (result) {
-//           resolve(result);
-//         } else {
-//           reject(err);
-//         }
-//       });
-//       streamifier.createReadStream(req.file.buffer).pipe(stream);
-//     });
-//   }
-//   async function upload(req) {
-//     let result = await streamUpload(req);
-//     console.log('stream upload to cloudinary: ', result);
-//   }
-//   upload(req);
-// });
-
-// //post reviewer images to cloudinary
-// app.post('/upload', fileUpload.array(reviewerPhotos), (req, res, next) => {
-//   let streamUpload = (req) => {
-//     return new Promise((resolve, reject) => {
-//       let stream = cloudinary.uploader.upload_stream((err, result) => {
-//         if (result) {
-//           resolve(result);
-//         } else {
-//           reject(err);
-//         }
-//       });
-//       streamifier.createReadStream(req.file.buffer).pipe(stream);
-//     });
-//   }
-//   async function upload(req) {
-//     let result = await streamUpload(req);
-//     console.log('stream upload to cloudinary: ', result);
-//   }
-//   upload(req);
-// });
-
-
-app.get('/:id/room_photos', (req, res) => {
+app.get('/images', (req, res) => {
   Images.find({})
     .then((data) => {
-      res.status(200).send(data);
-      console.log('success getting data from images db: ', data);
+      res.send(data);
+      console.log('success getting data from images db');
     })
     .catch((err) => {
       res.status(500);
       console.log('error getting data from images db: ', err);
     });
 });
+
+// app.get('/:id/images', (req, res) => { //not working now- need to match-up?
+//   Images.findById(req.params.id)
+//     .then((data) => {
+//       res.send(data);
+//       console.log('images by id: ', data);
+//     })
+//     .catch((err) => {
+//       res.status(500);
+//       console.log('error getting room id from images db: ', err);
+//     });
+// });
 
 
 

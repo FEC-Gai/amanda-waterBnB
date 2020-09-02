@@ -1,7 +1,8 @@
 const axios = require('axios');
+const path = require('path');
 const Unsplash = require('unsplash-js').default;
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, './.env') });
 
 
 let getUnsplashRooms = (query = 'living,indoors,room') => {
