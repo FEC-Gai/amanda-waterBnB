@@ -11,14 +11,12 @@ async function allUrls() {
     roomUrls.push(rooms[i].urls.raw + "&w=1057");
   }
   allPhotos.roomPhotos = roomUrls;
-
   let hostUrls = [];
   let hosts = await getUnsplashHosts('person,happy')
   for (let i = 0; i < hosts.length; i++) {
     hostUrls.push(hosts[i].urls.raw + "&w=204");
   }
   allPhotos.hostPhotos = hostUrls;
-
   let reviewerUrls = [];
   let reviewers = await getUnsplashReviewers('person,cheerful')
   for (let i = 0; i < reviewers.length; i++) {
@@ -44,14 +42,13 @@ async function generatePhotos() {
     photos.review_count = faker.random.number({'min': 1, 'max': 10})
     results.push(photos);
   }
-  //console.log('results: ', results); //this is not getting into my db- this looks exactly how I want it to
   return results;
 };
 
 
 // generatePhotos()
 //   .then((results) => {
-//     console.log('generatePhotos results: ', results); //should not be in array
+//     console.log('generatePhotos results: ', results);
 //   })
 
 exports.generatePhotos = generatePhotos;

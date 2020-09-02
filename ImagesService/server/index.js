@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
-const streamifier = require('streamifier');
-const fs = require('fs');
+//const cloudinary = require('cloudinary').v2;
+//const streamifier = require('streamifier');
+//const fs = require('fs');
 const db = require('../database/index.js');
 const Images = require('../database/Images.js');
 
@@ -30,7 +30,7 @@ app.get('/images', (req, res) => {
     });
 });
 
-// app.get('/images/:roomId', (req, res) => { //not working now- need to match-up?
+// app.get('/images/:roomId', (req, res) => { //need to match-up
 //   Images.findById(req.params.roomId)
 //     .then((data) => {
 //       res.send(data);
