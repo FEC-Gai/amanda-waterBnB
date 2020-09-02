@@ -20,7 +20,7 @@ class Images extends React.Component {
   }
 
   getPhotosByRoomId() {
-
+  //working without id for now
   axios.get(`http://localhost:3001/images`)
     .then((response) => {
       console.log('images data: ', response.data);
