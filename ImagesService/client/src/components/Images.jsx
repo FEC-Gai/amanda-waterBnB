@@ -8,6 +8,7 @@ class Images extends React.Component {
     this.state = {
       title: '',
       photos: [],
+      mainPhoto: '',
       hasLoaded: false
     }
     this.getPhotosByRoomId = this.getPhotosByRoomId.bind(this);
@@ -21,13 +22,16 @@ class Images extends React.Component {
 
   getPhotosByRoomId() {
   //working without id for now
+  // /images/:roomId
+  //will be `http://localhost:3001/images/${roomId}`
+  //then mainPhoto: roomPhotos[0]
   axios.get(`http://localhost:3001/images`)
     .then((response) => {
       console.log('images data: ', response.data);
-      let allPhotos = [];
-      allPhotos.push(response.data[0]);
+      const roomPhotos = response.data[0].room_photos.slice();
       this.setState({
-        photos: allPhotos,
+        photos: roomPhotos,
+        mainPhoto: roomPhotos[0],
         hasLoaded: true
       });
     })

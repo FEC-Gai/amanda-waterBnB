@@ -30,8 +30,8 @@ app.get('/images', (req, res) => {
     });
 });
 
-// app.get('/:id/images', (req, res) => { //not working now- need to match-up?
-//   Images.findById(req.params.id)
+// app.get('/images/:roomId', (req, res) => { //not working now- need to match-up?
+//   Images.findById(req.params.roomId)
 //     .then((data) => {
 //       res.send(data);
 //       console.log('images by id: ', data);
