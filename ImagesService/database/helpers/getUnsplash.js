@@ -1,20 +1,22 @@
 const axios = require('axios');
+const path = require('path');
 const Unsplash = require('unsplash-js').default;
+const faker = require('faker');
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, './.env') });
 
 
-let getUnsplashRooms = (query = 'living,indoors,room') => {
+let getUnsplashRooms = (query, max) => {
   let options = {
     method: 'GET',
-    url: `https://api.unsplash.com/search/photos/?query=${query}&page=5&per_page=30&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
+    url: `https://api.unsplash.com/search/photos/?query=${query}&page=1&per_page=${max}&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
   };
 
   return axios(options)
     .then((response) => {
       //response.data shows total # of results & total pages
       //response.data.results is an array of image objects
-      console.log('🔶response.data.results length', response.data.results.length);
+      //console.log('🔶response.data.results length', response.data.results.length);
       return response.data.results;
     })
     .catch((err) => {
@@ -22,17 +24,17 @@ let getUnsplashRooms = (query = 'living,indoors,room') => {
     });
 };
 
-let getUnsplashHosts = (query = 'person,happy') => {
+let getUnsplashHosts = (query) => {
   let options = {
     method: 'GET',
-    url: `https://api.unsplash.com/search/photos/?query=${query}&page=5&per_page=30&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
+    url: `https://api.unsplash.com/search/photos/?query=${query}&page=1&per_page=1&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
   };
 
   return axios(options)
     .then((response) => {
       //response.data shows total # of results & total pages
       //response.data.results is an array of image objects
-      console.log('🔶response.data.results length', response.data.results.length);
+      //console.log('🔶response.data.results length', response.data.results.length);
       return response.data.results;
     })
     .catch((err) => {
@@ -40,17 +42,17 @@ let getUnsplashHosts = (query = 'person,happy') => {
     });
 };
 
-let getUnsplashReviewers = (query = 'person,cheerful') => {
+let getUnsplashReviewers = (query, max) => {
   let options = {
     method: 'GET',
-    url: `https://api.unsplash.com/search/photos/?query=${query}&page=5&per_page=30&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
+    url: `https://api.unsplash.com/search/photos/?query=${query}&page=1&per_page=${max}&orientation=landscape&client_id=${process.env.UNSPLASH_API_KEY}`
   };
 
   return axios(options)
     .then((response) => {
       //response.data shows total # of results & total pages
       //response.data.results is an array of image objects
-      console.log('🔶response.data.results length', response.data.results.length);
+      //console.log('🔶response.data.results length', response.data.results.length);
       return response.data.results;
     })
     .catch((err) => {
@@ -61,6 +63,3 @@ let getUnsplashReviewers = (query = 'person,cheerful') => {
 exports.getUnsplashRooms = getUnsplashRooms;
 exports.getUnsplashHosts = getUnsplashHosts;
 exports.getUnsplashReviewers = getUnsplashReviewers;
-
-
-//portrait,person
