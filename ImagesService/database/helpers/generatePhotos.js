@@ -2,23 +2,46 @@ const Promise = require('bluebird');
 const { getUnsplashRooms, getUnsplashHosts, getUnsplashReviewers } = require('./getUnsplash.js');
 const faker = require('faker');
 
+
 async function allUrls() {
   let allPhotos = {};
+
+  let roomQueries = ['living', 'indoors', 'room', 'interior', 'kitchen', 'bathroom', 'home', 'bedroom', 'den'];
+  const getRandomRoomPic = () => {
+    var index = Math.floor(Math.random() * roomQueries.length);
+    return roomQueries[index];
+  };
+  let randomRoomQuery = getRandomRoomPic();
+  let max = faker.random.number({min: 3, max: 12});
   let roomUrls = [];
-  let rooms = await getUnsplashRooms('living,indoors,room')
+  let rooms = await getUnsplashRooms(randomRoomQuery, max)
   //can write synchronously here, because the timing is handled under hood
   for (let i = 0; i < rooms.length; i++) {
     roomUrls.push(rooms[i].urls.raw + "&w=1057");
   }
   allPhotos.roomPhotos = roomUrls;
+
+  let hostQueries = ['woman', 'man', 'person', 'happy', 'portrait', 'cheerful', 'hipster', 'human', 'alone', 'couple', 'family', 'people'];
+  const getRandomHostPic = () => {
+    var index = Math.floor(Math.random() * hostQueries.length);
+    return hostQueries[index];
+  };
+  let randomHostQuery = getRandomHostPic();
   let hostUrls = [];
-  let hosts = await getUnsplashHosts('person,happy')
+  let hosts = await getUnsplashHosts(randomHostQuery)
   for (let i = 0; i < hosts.length; i++) {
     hostUrls.push(hosts[i].urls.raw + "&w=204");
   }
   allPhotos.hostPhotos = hostUrls;
+
+  let reviewerQueries = ['excited', 'person', 'happy', 'portrait', 'cheerful', 'hipster', 'couple', 'people', 'human', 'glad'];
+  const getRandomReviewerPic = () => {
+    var index = Math.floor(Math.random() * reviewerQueries.length);
+    return reviewerQueries[index];
+  };
+  let randomReviewerQuery = getRandomReviewerPic();
   let reviewerUrls = [];
-  let reviewers = await getUnsplashReviewers('person,cheerful')
+  let reviewers = await getUnsplashReviewers(randomReviewerQuery, max)
   for (let i = 0; i < reviewers.length; i++) {
     reviewerUrls.push(reviewers[i].urls.raw + "&w=204");
   }
