@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-//import PhotoGrid from './PhotoGrid.jsx';
+import PhotoGrid from './PhotoGrid.jsx';
+//import PhotoCarousel from './PhotoCarousel.jsx';
 
 class Images extends React.Component {
   constructor(props) {
@@ -8,7 +9,6 @@ class Images extends React.Component {
     this.state = {
       title: '',
       photos: [],
-      mainPhoto: {},
       carouselHidden: true
     }
     this.getPhotosByRoomId = this.getPhotosByRoomId.bind(this);
@@ -31,8 +31,7 @@ class Images extends React.Component {
         console.log('images data by room id: ', response.data);
         const roomPhotos = response.data[0].room_photos.slice();
         this.setState({
-          photos: roomPhotos,
-          mainPhoto: roomPhotos[0]
+          photos: roomPhotos
         });
       })
       .catch((err) => {
@@ -57,17 +56,12 @@ class Images extends React.Component {
   // }
 
   render() {
-    const { title } = this.state;
-    const { photos } = this.state;
-    const { mainPhoto } = this.state;
-    const { carouselHidden } = this.state;
-    //   return (
-    //     <h1>{ title }</h1>
-    //     <PhotoGrid photos={ photos } />
-    //   );
+    //const { title } = this.state;
+    //const { carouselHidden } = this.state;
     return (
       <div className="photo-gallery">
         <h1>Unique Glamping Experience</h1>
+          <PhotoGrid photos={ this.state.photos } />
       </div>
     );
   }
