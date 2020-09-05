@@ -9,12 +9,12 @@ class Images extends React.Component {
     this.state = {
       title: '',
       photos: [],
+      isSuperHost: false,
       hasLoaded: false,
       gridClicked: false,
       clickedPhoto: null
     }
     this.getPhotosByRoomId = this.getPhotosByRoomId.bind(this);
-    //this.getTitleByRoomId = this.getTitleByRoomId.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -23,8 +23,6 @@ class Images extends React.Component {
     let roomId = Number(search.split('?').pop());
     console.log('roomId (not being used now): ', roomId);
     this.getPhotosByRoomId(roomId);
-
-    //this.getTitleByRoomId();
   }
 
   getPhotosByRoomId(id) {
@@ -33,8 +31,12 @@ class Images extends React.Component {
       .then((response) => {
         console.log('images data by room id: ', response.data);
         const roomPhotos = response.data[0].room_photos.slice();
+        // const title = response.data[0].title.slice();
+        // const host = response.data[0].is_super_host.slice();
         this.setState({
+          //title: title,
           photos: roomPhotos,
+          //isSuperHost: host,
           hasLoaded: true
         });
       })
@@ -42,22 +44,6 @@ class Images extends React.Component {
         console.log('error getting photos by id from server: ', err);
       })
   }
-
-  // getTitleByRoomId(roomId) {
-    // axios.get(`http://localhost:3001/${roomId}/title`)
-    //   .then((response) => {
-    //     console.log('photos: ', response.data);
-    //     let allPhotos = [];
-    //     allPhotos.push(response.data[0]);
-    //     this.setState({
-    //       photos: allPhotos,
-    //       hasLoaded: true
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log('error getting photos: ', err);
-    //   })
-  // }
 
   handleClick(e) {
     e.prevent.default();
