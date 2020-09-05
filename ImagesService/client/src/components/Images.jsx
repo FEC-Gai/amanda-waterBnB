@@ -8,92 +8,69 @@ class Images extends React.Component {
     this.state = {
       title: '',
       photos: [],
-      mainPhoto: '',
-      hasLoaded: false
+      mainPhoto: {},
+      carouselHidden: true
     }
     this.getPhotosByRoomId = this.getPhotosByRoomId.bind(this);
     //this.getTitleByRoomId = this.getTitleByRoomId.bind(this);
   }
 
   componentDidMount() {
-  //this.getTitleByRoomId(1);
-  this.getPhotosByRoomId();
+    let search = window.location.search;
+    let roomId = Number(search.split('?').pop());
+    console.log('roomId (not being used now): ', roomId);
+    this.getPhotosByRoomId(roomId);
+
+    //this.getTitleByRoomId();
   }
 
-  getPhotosByRoomId() {
-  //working without id for now
-  // /images/:roomId
-  //will be `http://localhost:3001/images/${roomId}`
-  //then mainPhoto: roomPhotos[0]
-  axios.get(`http://localhost:3001/images`)
-    .then((response) => {
-      console.log('images data: ', response.data);
-      const roomPhotos = response.data[0].room_photos.slice();
-      this.setState({
-        photos: roomPhotos,
-        mainPhoto: roomPhotos[0],
-        hasLoaded: true
-      });
-    })
-    .catch((err) => {
-      console.log('error getting photos: ', err);
-    })
+  getPhotosByRoomId(id) {
+    //console.log('id: ', id);
+    axios.get(`http://localhost:3001/images/${id}`)
+      .then((response) => {
+        console.log('images data by room id: ', response.data);
+        const roomPhotos = response.data[0].room_photos.slice();
+        this.setState({
+          photos: roomPhotos,
+          mainPhoto: roomPhotos[0]
+        });
+      })
+      .catch((err) => {
+        console.log('error getting photos by id from server: ', err);
+      })
   }
 
   // getTitleByRoomId(roomId) {
-  //   //will pass in folder on cloudinary api endpoint
-  // axios.get(`http://localhost:3001/${roomId}/title`)
-  //   .then((response) => {
-  //     console.log('photos: ', response.data);
-  //     let allPhotos = [];
-  //     allPhotos.push(response.data[0]);
-  //     this.setState({
-  //       photos: allPhotos,
-  //       hasLoaded: true
-  //     });
-  //   })
-  //   .catch((err) => {
-  //     console.log('error getting photos: ', err);
-  //   })
+    // axios.get(`http://localhost:3001/${roomId}/title`)
+    //   .then((response) => {
+    //     console.log('photos: ', response.data);
+    //     let allPhotos = [];
+    //     allPhotos.push(response.data[0]);
+    //     this.setState({
+    //       photos: allPhotos,
+    //       hasLoaded: true
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log('error getting photos: ', err);
+    //   })
   // }
 
   render() {
     const { title } = this.state;
     const { photos } = this.state;
-    const { hasLoaded } = this.state;
-    // if (hasLoaded) {
+    const { mainPhoto } = this.state;
+    const { carouselHidden } = this.state;
     //   return (
     //     <h1>{ title }</h1>
     //     <PhotoGrid photos={ photos } />
     //   );
-    // }
     return (
-      <h1>Unique Glamping Experience</h1>
+      <div className="photo-gallery">
+        <h1>Unique Glamping Experience</h1>
+      </div>
     );
   }
 }
 
 export default Images;
-
-
-// componentDidMount() {
-//   //this.getTitleByRoomId(1);
-//   this.getPhotosByRoomId(1);
-//   }
-
-//   getPhotosByRoomId(roomId) {
-
-//   axios.get(`http://localhost:3001/${roomId}/images`)
-//     .then((response) => {
-//       console.log('images data: ', response.data);
-//       let allPhotos = [];
-//       allPhotos.push(response.data[0]);
-//       this.setState({
-//         photos: allPhotos,
-//         hasLoaded: true
-//       });
-//     })
-//     .catch((err) => {
-//       console.log('error getting photos: ', err);
-//     })
-//   }

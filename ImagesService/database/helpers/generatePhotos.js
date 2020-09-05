@@ -12,9 +12,9 @@ async function allUrls() {
     return roomQueries[index];
   };
   let randomRoomQuery = getRandomRoomPic();
-  let max = faker.random.number({min: 3, max: 12});
+  let max = faker.random.number({'min': 3, 'max': 12});
   let roomUrls = [];
-  let rooms = await getUnsplashRooms(randomRoomQuery, max)
+  let rooms = await getUnsplashRooms(randomRoomQuery, max);
   //can write synchronously here, because the timing is handled under hood
   for (let i = 0; i < rooms.length; i++) {
     roomUrls.push(rooms[i].urls.raw + "&w=1057");
@@ -40,6 +40,7 @@ async function allUrls() {
     return reviewerQueries[index];
   };
   let randomReviewerQuery = getRandomReviewerPic();
+  max = faker.random.number({'min': 3, 'max': 16});
   let reviewerUrls = [];
   let reviewers = await getUnsplashReviewers(randomReviewerQuery, max)
   for (let i = 0; i < reviewers.length; i++) {
@@ -49,22 +50,29 @@ async function allUrls() {
   return allPhotos;
 };
 
-
 //generate array of 100 objects for seedingData
 async function generatePhotos() {
-  let allRoomsUrls = await allUrls().catch((err) => console.log(err));
-  //console.log('allRoomsUrls: ', allRoomsUrls);
   const results = [];
+  const range = [];
   for (let i = 1; i < 101; i++) {
-    let photos = {};
-    photos.room_id = i;
-    photos.room_photos = allRoomsUrls.roomPhotos;
-    photos.host_image = allRoomsUrls.hostPhotos;
-    photos.reviewers = allRoomsUrls.reviewerPhotos;
-    photos.rating = faker.random.number({'min': 1, 'max': 5});
-    photos.review_count = faker.random.number({'min': 1, 'max': 10})
-    results.push(photos);
+    range.push(i);
   }
+  for (const j of range) { //not fulfilling all of loop- sporadic
+    await allUrls()
+    //only working w/ .then after await, not working without like above
+      .then((value) => {
+        let photos = {};
+        photos.room_id = j;
+        photos.room_photos = value.roomPhotos;
+        photos.host_image = value.hostPhotos;
+        photos.reviewers = value.reviewerPhotos;
+        photos.rating = faker.random.number({'min': 1, 'max': 5});
+        photos.review_count = faker.random.number({'min': 1, 'max': 10})
+        results.push(photos);
+      })
+      .catch((err) => console.log('error getting allUrls: ', err));
+  }
+  //console.log('results.length: ', results.length);
   return results;
 };
 

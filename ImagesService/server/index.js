@@ -30,17 +30,25 @@ app.get('/images', (req, res) => {
     });
 });
 
-// app.get('/images/:roomId', (req, res) => { //need to match-up
-//   Images.findById(req.params.roomId)
-//     .then((data) => {
-//       res.send(data);
-//       console.log('images by id: ', data);
-//     })
-//     .catch((err) => {
-//       res.status(500);
-//       console.log('error getting room id from images db: ', err);
-//     });
+//didn't change anything with how my data is rendering
+// app.get('/:id', (req, res) => {
+//   res.sendFile(path.join(__dirname + './../client/dist/index.html'));
 // });
+
+app.get('/images/:roomId', (req, res) => {
+  console.log('typeof req.params.roomId: ', typeof req.params.roomId);
+  let id = Number(req.params.roomId);
+  console.log('typeof id: ', typeof id);
+  Images.find({room_id: id})
+    .then((data) => {
+      res.send(data);
+      console.log('images by id: ', data);
+    })
+    .catch((err) => {
+      res.status(500);
+      console.log('error getting room id from images db: ', err);
+    });
+});
 
 
 
