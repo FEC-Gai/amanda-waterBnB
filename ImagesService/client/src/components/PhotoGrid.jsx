@@ -3,13 +3,6 @@ import Fa from 'react-fontawesome';
 
 const PhotoGrid = (props) => {
   console.log('props in PhotoGrid: ', props); //props.photos[url, url, url]
-
-  // handleClick(e) {
-  //   e.prevent.default();
-  //   //function call for carousel view //props.carouselView()
-  // }
-
-  //onClick={handleClick}
   return (
     <div className="photo-grid">
       <div className="main-photo-wrapper">

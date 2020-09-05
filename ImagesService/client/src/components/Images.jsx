@@ -9,10 +9,13 @@ class Images extends React.Component {
     this.state = {
       title: '',
       photos: [],
-      carouselHidden: true
+      hasLoaded: false,
+      gridClicked: false,
+      clickedPhoto: null
     }
     this.getPhotosByRoomId = this.getPhotosByRoomId.bind(this);
     //this.getTitleByRoomId = this.getTitleByRoomId.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -31,7 +34,8 @@ class Images extends React.Component {
         console.log('images data by room id: ', response.data);
         const roomPhotos = response.data[0].room_photos.slice();
         this.setState({
-          photos: roomPhotos
+          photos: roomPhotos,
+          hasLoaded: true
         });
       })
       .catch((err) => {
@@ -55,14 +59,32 @@ class Images extends React.Component {
     //   })
   // }
 
+  handleClick(e) {
+    e.prevent.default();
+    this.setState({
+      gridClicked: !this.state.gridClicked,
+      clickedPhoto: e.target
+    });
+  }
+
   render() {
-    //const { title } = this.state;
-    //const { carouselHidden } = this.state;
+    if (this.state.hasLoaded) {
+      if (!this.state.gridClicked) {
+        return (
+          <div className="photo-gallery">
+            <h3>Contemporary Cozy Home</h3>
+              <PhotoGrid photos={ this.state.photos } onClick={this.handleClick} />
+          </div>
+        );
+      }
+      // return (
+      //   <div className="photo-carousel">
+      //     <PhotoCarousel photos={ this.state.photos } clickedPhoto={ this.state.clickedPhoto } handleClick={ this.handleClick } />
+      //   </div>
+      // );
+    }
     return (
-      <div className="photo-gallery">
-        <h1>Unique Glamping Experience</h1>
-          <PhotoGrid photos={ this.state.photos } />
-      </div>
+      <h3>Unique Glamping Experience</h3>
     );
   }
 }

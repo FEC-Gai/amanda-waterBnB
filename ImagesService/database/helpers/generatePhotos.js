@@ -6,7 +6,7 @@ const faker = require('faker');
 async function allUrls() {
   let allPhotos = {};
 
-  let roomQueries = ['living', 'indoors', 'room', 'interior', 'kitchen', 'bathroom', 'home', 'bedroom', 'den'];
+  let roomQueries = ['living', 'indoors', 'room', 'interior', 'home'];
   const getRandomRoomPic = () => {
     var index = Math.floor(Math.random() * roomQueries.length);
     return roomQueries[index];
@@ -15,8 +15,8 @@ async function allUrls() {
   let max = faker.random.number({'min': 3, 'max': 12});
   let roomUrls = [];
   let rooms = await getUnsplashRooms(randomRoomQuery, max);
-  //can write synchronously here, because the timing is handled under hood
-  for (let i = 0; i < rooms.length; i++) {
+  //can write synchronously here, because the timing is handled under hood???
+  for (let i = 0; i < rooms.length; i++) { //getting into loop before fulfilled
     roomUrls.push(rooms[i].urls.raw + "&w=1057");
   }
   allPhotos.roomPhotos = roomUrls;
@@ -43,7 +43,7 @@ async function allUrls() {
   max = faker.random.number({'min': 3, 'max': 16});
   let reviewerUrls = [];
   let reviewers = await getUnsplashReviewers(randomReviewerQuery, max)
-  for (let i = 0; i < reviewers.length; i++) {
+  for (let i = 0; i < reviewers.length; i++) { //getting into loop before fulfilled
     reviewerUrls.push(reviewers[i].urls.raw + "&w=204");
   }
   allPhotos.reviewerPhotos = reviewerUrls;
@@ -63,11 +63,13 @@ async function generatePhotos() {
       .then((value) => {
         let photos = {};
         photos.room_id = j;
+        photos.title = faker.lorem.sentence({'wordCount': 3});
         photos.room_photos = value.roomPhotos;
         photos.host_image = value.hostPhotos;
         photos.reviewers = value.reviewerPhotos;
         photos.rating = faker.random.number({'min': 1, 'max': 5});
-        photos.review_count = faker.random.number({'min': 1, 'max': 10})
+        photos.review_count = faker.random.number({'min': 1, 'max': 10});
+        photos.isSuperHost = faker.random.arrayElement([true, false]);
         results.push(photos);
       })
       .catch((err) => console.log('error getting allUrls: ', err));
@@ -77,9 +79,9 @@ async function generatePhotos() {
 };
 
 
-// generatePhotos()
-//   .then((results) => {
-//     console.log('generatePhotos results: ', results);
-//   })
+generatePhotos()
+  .then((results) => {
+    console.log('generatePhotos results: ', results);
+  })
 
 exports.generatePhotos = generatePhotos;
